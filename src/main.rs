@@ -110,6 +110,14 @@ impl StorageAPI {
         let logs = self.web3.eth().logs(filter).await?;
         Ok(logs)
     }
+
+    async fn get_storage_at(
+        &self,
+        slot: U256,
+    ) -> Result<U256, Box<dyn std::error::Error>> {
+        let result = self.web3.eth().storage(self.contract_address, slot, None).await?;
+        Ok(U256::from_big_endian(&result.0))
+    }
 }
 
 #[tokio::main]
